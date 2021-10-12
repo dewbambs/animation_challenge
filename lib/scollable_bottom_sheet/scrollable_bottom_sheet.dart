@@ -74,7 +74,20 @@ class _ScrollableBottomSheetChallengeState extends State<ScrollableBottomSheetCh
             fit: BoxFit.fitHeight,
           ),
 
-          // Expandable bottom sheet
+          Positioned(
+            child: ElevatedButton(
+              onPressed: () async {
+                _heightTween.begin = 200;
+                _animationController.animateTo(0, duration: Duration(milliseconds: 600));
+                await Future.delayed(Duration(milliseconds: 610));
+                _animationController.reset();
+                _heightTween.end = 600;
+              },
+              child: Text("Press to switch"),
+            ),
+          ),
+
+          //! Expandable bottom sheet
           Positioned(
             left: 0,
             right: 0,
@@ -153,9 +166,7 @@ class _ScrollableBottomSheetChallengeState extends State<ScrollableBottomSheetCh
     // * 1. animation contoller is completely open
     // * 2. _heightTween == maxHeight which checks it's total open position and not the snap point
     // * 3. check primary delta which when negative which means user tried to scroll upwards
-    if (_animationController.value >= _animationController.upperBound &&
-        _heightTween.end == maxHeight &&
-        details.primaryDelta! < 0) {
+    if (_animationController.value >= _animationController.upperBound && details.primaryDelta! < 0) {
       setState(() {
         _scrollPhysics = BouncingScrollPhysics();
       });
